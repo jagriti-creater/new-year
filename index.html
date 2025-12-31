@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy New Year ❤️</title>
+<style>
+*{box-sizing:border-box;}
+body{margin:0;background:black;color:white;font-family:Georgia, serif;overflow:hidden;text-align:center;}
+.section{height:100vh;display:none;flex-direction:column;justify-content:center;align-items:center;padding:20px;}
+.section.active{display:flex;}
+button{padding:12px 30px;border:none;border-radius:30px;background:crimson;color:white;margin:8px;font-size:16px;cursor:pointer;transition:.3s;}
+button:active{transform:scale(.9);}
+
+/* GIF + photos */
+.gif{width:220px;display:block;margin:20px auto;}
+.photo{width:140px;border-radius:15px;margin:10px;}
+
+/* Typing */
+#typing{font-size:36px;color:gold;letter-spacing:2px;border-right:2px solid gold;white-space:nowrap;overflow:hidden;animation:blink .8s infinite;}
+#subTyping{font-size:28px;color:#ff4d6d;letter-spacing:2px;border-right:2px solid #ff4d6d;white-space:nowrap;overflow:hidden;animation:blink .8s infinite;}
+
+/* Wishes Section */
+#wishContainer{
+  height:50vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:center;
+}
+#wishTyping{
+  line-height:1.5;
+  text-align:center;
+  white-space:normal; /* horizontal typing */
+}
+
+/* Countdown */
+#countdown{font-size:22px;color:#FFD700;margin:15px 0;}
+
+/* Firecracker heart shape */
+.spark{position:absolute;width:4px;height:4px;border-radius:50%;background:radial-gradient(circle,#fff,#ff0044);box-shadow:0 0 15px #ff0044;animation:blast 2.5s ease-out forwards;}
+@keyframes blast{to{transform:translate(var(--x),var(--y)) scale(.2);opacity:0;}}
+</style>
+</head>
+<body ontouchstart="firework(event)" onclick="firework(event)">
+
+<!-- Sounds -->
+<audio id="boom" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7f6f06b1c1.mp3"></audio>
+<audio id="bgSong" src="song.mp3" loop></audio>
+
+<!-- SECTION 1: Hey Jaan + GIF -->
+<div class="section active" id="s1">
+<h1>Hey Jaan ❤️</h1>
+<img src="hey.gif" class="gif">
+<button onclick="go(2)">Next ➡️</button>
+</div>
+
+<!-- SECTION 2: Happy New Year + Typing + Countdown -->
+<div class="section" id="s2">
+<h1 id="typing"></h1>
+<h2 id="subTyping"></h2>
+<div id="countdown"></div>
+<button onclick="go(1)">⬅ Back</button>
+<button onclick="go(3)">Next ➡️</button>
+</div>
+
+<!-- SECTION 3: Wishes + Gold Horizontal Typing -->
+<div class="section" id="s3">
+<h1>New Year Wishes 🎉</h1>
+<div id="wishContainer">
+  <div id="wishTyping"></div>
+</div>
+<button onclick="go(2)">⬅ Back</button>
+<button onclick="go(4)">Next ➡️</button>
+</div>
+
+<!-- SECTION 4: Photos + Song -->
+<div class="section" id="s4">
+<h1>Us 💑</h1>
+<div class="photos">
+<img src="love1.jpg" class="photo">
+<img src="love2.jpg" class="photo">
+</div>
+<audio id="bgSongAuto" autoplay loop>
+<source src="song.mp3" type="audio/mpeg">
+</audio>
+<button onclick="go(3)">⬅ Back</button>
+<button onclick="go(5)">Next ➡️</button>
+</div>
+
+<!-- SECTION 5: Ending GIF -->
+<div class="section" id="s5">
+<h1>Forever Us ❤️</h1>
+<img src="end.gif" class="gif">
+<button onclick="go(4)">⬅ Back</button>
+</div>
+
+<script>
+// Section Navigation
+function go(n){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById('s'+n).classList.add('active');
+if(n===4){document.getElementById("bgSongAuto").play().catch(()=>{});}
+}
+
+// Countdown
+const target=new Date("Jan 1, 2026 00:00:00").getTime();
+setInterval(()=>{
+const d=target-new Date().getTime();
+if(d<0){document.getElementById('countdown').innerHTML="🎉 Happy New Year 🎉";return;}
+const s=Math.floor(d/1000)%60;
+const m=Math.floor(d/60000)%60;
+const h=Math.floor(d/3600000)%24;
+const day=Math.floor(d/86400000);
+document.getElementById('countdown').innerHTML=`${day}d ${h}h ${m}m ${s}s`;
+},1000);
+
+// Section 2 Typing
+const textBig = "🎆 Happy New Year 🎆";
+let iBig = 0;
+function typeBig(){
+  if(iBig<textBig.length){
+    document.getElementById("typing").innerHTML += textBig.charAt(iBig++);
+    setTimeout(typeBig,60);
+  }
+}
+typeBig();
+
+const textSmall = "My Love ❤️";
+let iSmall = 0;
+function typeSmall(){
+  if(iSmall<textSmall.length){
+    document.getElementById("subTyping").innerHTML += textSmall.charAt(iSmall++);
+    setTimeout(typeSmall,200);
+  }
+}
+typeSmall();
+
+// Section 3 Wishes Horizontal Typing (Gold Small Letters)
+const wishText = "Happiest New Year my heart💗😘. Finally hme ek sth rhte 2 sal ho gy🫶🏻 y hmari achievement hi smjhiye mdm😄 pr es br v hum log ek dusre s boht dur h, y long distance thoda boht dukh deta h but it's okye one day we'll celebrate alot of New years together 💐mey this we spend a lot of tym toghether or hn again this year, I love you more than last year💋💋 uuummaahhh💋💋 luv u so much my princess 👑😚 again wish you a very happy new year my love 😘";
+let iWish = 0;
+const wishColor = "#FFD700"; // Gold
+const wishFont = "18px";      // small letters
+
+function typeWishSimple(){
+  if(iWish < wishText.length){
+    const span = document.createElement("span");
+    span.textContent = wishText.charAt(iWish++);
+    span.style.color = wishColor;
+    span.style.fontSize = wishFont;
+    document.getElementById("wishTyping").appendChild(span);
+
+    const container = document.getElementById("wishContainer");
+    container.scrollTop = container.scrollHeight - container.clientHeight;
+
+    setTimeout(typeWishSimple, 25);
+  }
+}
+typeWishSimple();
+
+// Heart-shaped Firecracker
+function firework(e){
+  document.getElementById("boom").play();
+  let heartPoints=[];
+  for(let t=0;t<2*Math.PI;t+=0.2){
+    let x = 16*Math.pow(Math.sin(t),3);
+    let y = - (13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t));
+    heartPoints.push({x:x*10,y:y*10});
+  }
+  heartPoints.forEach(pt=>{
+    const s=document.createElement("div");
+    s.className="spark";
+    s.style.left=e.clientX+"px";
+    s.style.top=e.clientY+"px";
+    s.style.setProperty("--x",pt.x+"px");
+    s.style.setProperty("--y",pt.y+"px");
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),2500);
+  });
+}
+</script>
+</body>
+</html>
